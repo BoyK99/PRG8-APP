@@ -1,44 +1,43 @@
-// -----------------------
-// Load webcam and buttons
-// -----------------------
+// Extract the already learned features from MobileNet
+const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
 
-const video = document.getElementById("webcam");
-const label = document.getElementById("label");
-const scoreText = document.getElementById("score");
-const startBtn = document.getElementById("startGame")
-const retryBtn = document.getElementById("retry")
+// Prompt div and score
 const promptDiv = document.getElementById("prompt")
 let prompt = ""
 const randomArray = ["Pen", "Fles", "Telefoon"];
 let score = 0;
+const scoreText = document.getElementById("score");
+
+// File in-out/put
 const inputFile = document.getElementById("file")
+const img = document.getElementById("output")
 
-startBtn.addEventListener("click", () => randomize());
-retryBtn.addEventListener("click", () => restartGame());
-
-// -------------------------
-// Load ML5 FeatureExtractor
-// -------------------------
-
-// Extract the already learned features from MobileNet
-const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
-
-function loadCustom(){
-    featureExtractor.load('./model/model.json')
-    console.log("Custom model loaded")
-}
-
-// When the model is loaded
-function modelLoaded() {
-    loadCustom()
-    console.log('Model Loaded!');
-}
+// DOM elements
+const label = document.getElementById("label");
+const startBtn = document.getElementById("startGame")
+const retryBtn = document.getElementById("retry")
 
 // Allows three trained objects
 const options = { numLabels: 3 };
 
 // Create a new classifier using those features and with a video element
-const classifier = featureExtractor.classification(video, options);
+const classifier = featureExtractor.classification(img, options);
+
+// DOM buttons
+startBtn.addEventListener("click", () => randomize());
+retryBtn.addEventListener("click", () => restartGame());
+
+// Import custom model
+function loadCustom(){
+    featureExtractor.load('./model/model.json')
+    console.log("Custom model loaded")
+}
+
+// Load custom model
+function modelLoaded() {
+    loadCustom()
+    console.log('Model Loaded!');
+}
 
 // ------------------------------------------------
 // ML5 FeatureExtractor functions + other functions
@@ -77,7 +76,6 @@ function start() {
 
 // Restart game
 function restartGame() {
-    location.reload();
     // randomize()
     // img.style.display = "none"
     // retrybtn.style.display = "none"
@@ -90,7 +88,7 @@ function restartGame() {
 
 function fileAdded() {
     inputFile.style.display = "none"
-    img.src = URL.createObjectURL(event.target.files[0])
+    img.src = URL.createObjectURL(target.files[0])
     img.style.display = "inline-block"
     classify()
     retryBtn.style.display = "inline-block"
