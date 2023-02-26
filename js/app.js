@@ -2,19 +2,30 @@
 // Load webcam and buttons
 // -----------------------
 
+// Random vars
 const video = document.getElementById("webcam");
 const label = document.getElementById("label");
+const score = document.getElementById("score");
+const promptDiv = document.getElementById("prompt")
+const randomArray = ["Pen", "Fles", "Telefoon"];
+let prompt = ""
+let scoreText = 0;
 
+// Constants for buttons TRAINING ONLY
 const labelOneBtn = document.querySelector("#labelOne");
 const labelTwoBtn = document.querySelector("#labelTwo");
 const labelThreeBtn = document.querySelector("#labelThree");
 const trainbtn = document.querySelector("#train");
+const savebtn = document.querySelector("#save");
 
-labelOneBtn.addEventListener("click", () => console.log("button 1"));
-labelTwoBtn.addEventListener("click", () => console.log("button 2"));
-labelThreeBtn.addEventListener("click", () => console.log("button 3"));
+// Object buttons TRAINING ONLY
+labelOneBtn.addEventListener("click", () => classifier.addImage('pen'));
+labelTwoBtn.addEventListener("click", () => classifier.addImage('fles'));
+labelThreeBtn.addEventListener("click", () => classifier.addImage('telefoon'));
 
-trainbtn.addEventListener("click", () => console.log("train"));
+// Train buttons TRAINING ONLY
+trainbtn.addEventListener("click", () => classifier.train((lossValue) => { console.log('Loss is', lossValue) }));
+savebtn.addEventListener("click", () => saveModel() && console.log('Model is gesaved'));
 
 if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices
@@ -27,8 +38,6 @@ if (navigator.mediaDevices.getUserMedia) {
         });
 }
 
-label.innerText = "Ready when you are!";
-
 // -------------------------
 // Load ML5 FeatureExtractor
 // -------------------------
@@ -36,32 +45,41 @@ label.innerText = "Ready when you are!";
 // Extract the already learned features from MobileNet
 const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
 
+function loadCustom(){
+    featureExtractor.load('./model/model.json')
+    console.log("Custom model loaded")
+}
+
 // When the model is loaded
 function modelLoaded() {
-  console.log('Model Loaded!');
+    // loadCustom()
+    console.log('Model Loaded!');
 }
+
+// Allows three trained objects
+const options = { numLabels: 3 };
 
 // Create a new classifier using those features and with a video element
-const classifier = featureExtractor.classification(video, videoReady);
+const classifier = featureExtractor.classification(video, options);
 
-// Triggers when the video is ready
-function videoReady() {
-  console.log('The video is ready!');
+// ------------------------------------------------
+// ML5 FeatureExtractor functions + other functions
+// ------------------------------------------------
+
+// Save model TRAINING ONLY
+function saveModel() {
+    label.innerText = 'Model saved.';
+    featureExtractor.save();
 }
 
-// Add a new image with a label
-classifier.addImage(document.getElementById('dogA'), 'dog');
+// Retrain the network TRAINING ONLY
+function train() {
+    classifier.train((lossValue) => {
+        if (lossValue === null) {
+            label.innerText = 'Training Completed';
+        } else {
+            label.innerText = 'Loss is ' + lossValue;
+        }
+    });
+}
 
-// Retrain the network
-classifier.train((lossValue) => {
-  console.log('Loss is', lossValue);
-});
-
-// Get a prediction for that image
-classifier.classify(document.getElementById('dogB'), (err, result) => {
-  console.log(result); // Should output 'dog'
-});
-
-// --------
-// Load ML5
-// --------
