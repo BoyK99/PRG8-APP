@@ -1,12 +1,10 @@
 // Extract the already learned features from MobileNet
 const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
 
-// Prompt div and score
+// Prompt
 const promptDiv = document.getElementById("prompt")
 let prompt = ""
 const randomArray = ["Pen", "Fles", "Telefoon"];
-let score = 0;
-const scoreText = document.getElementById("score");
 
 // File in-out/put
 const inputFile = document.getElementById("file")
@@ -48,13 +46,11 @@ function classify() {
     classifier.classify(img, (err, result) => {
         if(err) console.log(err)
         if(result[0].label == prompt){
-            promptDiv.innerHTML = "Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+"is."
-            speak("Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+"is.")
-            score++
-            scoreText.innerHTML = "Score: "+score
+            promptDiv.innerHTML = "Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is."
+            speak("Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is.")
         }else{
-            promptDiv.innerHTML = "Dat is niet een "+prompt+". Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+"is."
-            speak("Dat is niet een "+prompt+". Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+"is.")
+            promptDiv.innerHTML = "Dat is niet een "+prompt+". Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is."
+            speak("Dat is niet een "+prompt+". Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is.")
         }
     })
 }
@@ -70,25 +66,17 @@ function start() {
     promptDiv.innerHTML = "Neem een foto van een " + prompt
     speak("Neem een foto van een " + prompt)
     promptDiv.style.display = "block"
-    scoreText.style.display = "block"    
     inputFile.style.display = "inline-block"
 }
 
 // Restart game
 function restartGame() {
-    // randomize()
-    // img.style.display = "none"
-    // retrybtn.style.display = "none"
-    // inputFile.value = null
-    // inputFile.style.display = "inline-block"
-    // console.log(img.src)
-    // URL.revokeObjectURL(img.src)
-    // img.src = ''
+    location.reload();
 }
 
 function fileAdded() {
     inputFile.style.display = "none"
-    img.src = URL.createObjectURL(target.files[0])
+    img.src = URL.createObjectURL(event.target.files[0])
     img.style.display = "inline-block"
     classify()
     retryBtn.style.display = "inline-block"
