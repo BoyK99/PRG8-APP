@@ -68,8 +68,8 @@ function randomize() {
 
 // Start game
 function start() {
-    promptDiv.innerHTML = "Neem een foto van " + prompt
-    speak("Take a picture of a " + prompt)
+    promptDiv.innerHTML = "Neem een foto van een " + prompt
+    speak("Neem een foto van een " + prompt)
     promptDiv.style.display = "block"
     scoreText.style.display = "block"    
     inputFile.style.display = "inline-block"
@@ -77,14 +77,15 @@ function start() {
 
 // Restart game
 function restartGame() {
-    randomize()
-    img.style.display = "none"
-    retrybtn.style.display = "none"
-    inputFile.value = null
-    inputFile.style.display = "inline-block"
-    console.log(img.src)
-    URL.revokeObjectURL(img.src)
-    img.src = ''
+    location.reload();
+    // randomize()
+    // img.style.display = "none"
+    // retrybtn.style.display = "none"
+    // inputFile.value = null
+    // inputFile.style.display = "inline-block"
+    // console.log(img.src)
+    // URL.revokeObjectURL(img.src)
+    // img.src = ''
 }
 
 function fileAdded() {
