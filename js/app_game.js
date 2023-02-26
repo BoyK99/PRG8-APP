@@ -92,7 +92,7 @@ function fileAdded() {
     img.src = URL.createObjectURL(event.target.files[0])
     img.style.display = "inline-block"
     classify()
-    retrybtn.style.display = "inline-block"
+    retryBtn.style.display = "inline-block"
 }
 
 // ------------
