@@ -1,12 +1,8 @@
-body {
+body, html {
     font-family: sans-serif;
-}
-
-#label {
-    width: 533px;
-    height: 20px;
-    color: white;
-    background-color: black;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 button {
@@ -26,4 +22,8 @@ button:hover {
 /* flip the video image */
 video {
     transform: scaleX(-1);
+}
+
+#objective, #file, #retry, #output, #score {
+    display: none;
 }
