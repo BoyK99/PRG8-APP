@@ -2,18 +2,18 @@
 const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
 
 // Prompt
-const promptDiv = document.getElementById("prompt")
+const promptDiv = document.getElementById("prompt");
 let prompt = ""
 const randomArray = ["Pen", "Fles", "Telefoon"];
 
 // File in-out/put
-const inputFile = document.getElementById("file")
-const img = document.getElementById("output")
+const inputFile = document.getElementById("file");
+const img = document.getElementById("output");
 
 // DOM elements
 const label = document.getElementById("label");
-const startBtn = document.getElementById("startGame")
-const retryBtn = document.getElementById("retry")
+const startBtn = document.getElementById("startGame");
+const retryBtn = document.getElementById("retry");
 
 // Allows three trained objects
 const options = { numLabels: 3 };
@@ -45,6 +45,7 @@ function modelLoaded() {
 function classify() {
     classifier.classify(img, (err, result) => {
         if(err) console.log(err)
+        console.log(result)
         if(result[0].label == prompt){
             promptDiv.innerHTML = "Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is."
             speak("Correct! Ik ben "+result[0].confidence.toString().substring(2,4)+"% zeker dat dit een "+result[0].label+" is.")
