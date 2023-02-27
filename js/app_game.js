@@ -4,7 +4,7 @@ const featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
 // Prompt
 const promptDiv = document.getElementById("prompt");
 let prompt = ""
-const randomArray = ["Pen", "Fles", "Telefoon"];
+const randomArray = ["pen", "fles", "telefoon"];
 
 // File in-out/put
 const inputFile = document.getElementById("file");
